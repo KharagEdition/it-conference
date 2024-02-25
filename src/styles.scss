@@ -1,1 +1,101 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+
+
+$nox-dark-primary-text: rgba(black, 0.87);
+$nox-dark-secondary-text: rgba(black, 0.54);
+$nox-dark-disabled-text: rgba(black, 0.38);
+$nox-dark-dividers: rgba(black, 0.12);
+$nox-dark-focused: rgba(black, 0.12);
+$nox-light-primary-text: white;
+$nox-light-secondary-text: rgba(white, 0.7);
+$nox-light-disabled-text: rgba(white, 0.5);
+$nox-light-dividers: rgba(white, 0.12);
+$nox-light-focused: rgba(white, 0.12);
+
+$nox-black-palette: (
+  50: #fafafa,
+  100: #f5f5f5,
+  200: #eeeeee,
+  300: #e0e0e0,
+  400: #bdbdbd,
+  500: #9e9e9e,
+  600: #757575,
+  700: #616161,
+  800: #424242,
+  900: #212121,
+  A100: #ffffff,
+  A200: #eeeeee,
+  A400: #bdbdbd,
+  A700: #616161,
+  contrast: (
+    50: $nox-dark-primary-text,
+    100: $nox-dark-primary-text,
+    200: $nox-dark-primary-text,
+    300: $nox-dark-primary-text,
+    400: $nox-dark-primary-text,
+    500: $nox-dark-primary-text,
+    600: $nox-light-primary-text,
+    700: $nox-light-primary-text,
+    800: $nox-light-primary-text,
+    900: $nox-light-primary-text,
+    A100: $nox-dark-primary-text,
+    A200: $nox-dark-primary-text,
+    A400: $nox-dark-primary-text,
+    A700: $nox-light-primary-text,
+  )
+);
+
+$nox-primary: mat.define-palette($nox-black-palette, 500);
+$nox-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The "warn" palette is optional and defaults to red if not specified.
+$nox-warn: mat.define-palette(mat.$red-palette);
+
+
+$nox-dark-theme: mat.define-light-theme((
+ color: (
+   primary: $nox-primary,
+   accent: $nox-accent,
+   warn: $nox-warn,
+ ),
+ typography: mat.define-typography-config(),
+ density: 0,
+));
+
+$nox-light-theme: mat.define-light-theme((
+ color: (
+   primary: mat.define-palette(mat.$indigo-palette),
+   accent: mat.define-palette(mat.$pink-palette),
+ ),
+));
+
+
+// Emit theme-dependent styles for common features used across multiple components.
+@include mat.core-theme($nox-dark-theme);
+
+// Emit styles for MatButton based on `$my-theme`. Because the configuration
+// passed to `define-light-theme` omits typography, `button-theme` will not
+// emit any typography styles.
+@include mat.button-theme($nox-dark-theme);
+
+@include mat.all-component-themes($nox-dark-theme);
+
+// Apply the light theme only when the user prefers light themes.
+@media (prefers-color-scheme: light) {
+    // Use the `-color` mixins to only apply color styles without reapplying the same
+    // typography and density styles.
+    @include mat.core-color($nox-light-theme);
+    @include mat.button-color($nox-light-theme);
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
